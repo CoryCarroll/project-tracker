@@ -1,3 +1,10 @@
+// Create variable
+var currentHour = moment().format('H');
+var dataSaved = document.getElementById('description');
+
+// Creating save button icon
+var saveBtn = $('.saveBtn');
+
 // Creates real time date into the header
 function getDate() {
     var today = moment().format('dddd, MMMM Do');
@@ -5,24 +12,30 @@ function getDate() {
 }
 getDate();
 
-// Creating save button icon
-var saveBtn = $('.saveBtn');
+$(document).ready(function() {
+    $('.saveBtn').on('click', function() {
+        var value = $(this).siblings('.description').val();
+        var time = $(this).parent().attr('id');
 
-// Create click event for save button
-$("#saveBtn").on('click', function(event) {
-    event.preventDefault();
+        localStorage.setItem(time, value);
+    })
 })
 
 // Creates past present future classes depending on time of day
-var plannerData = $("#hour-9");
-var currentHour = moment().format('hh');
-    if (currentHour < moment().format("hh")) {
-    plannerData.addClass('past');
-    } else if (currentHour.time === moment().format("hh")) {
-        plannerData.addClass('present');
-    } else if (currentHour.time > moment().format("hh")) {
-        plannerData.addClass('future');
-    };
+// Jerrod Linderman & Jessica Lane helped me with this function
+$('.time-block').each(function() {
+    var getHourId = parseInt($(this).attr('id').split('-')[1])
+
+    $(this).removeClass("past");
+
+    if (currentHour < getHourId) {
+        $(this).addClass("future");
+    } else if (currentHour == getHourId) {
+        $(this).addClass("present");
+    } else {
+        $(this).addClass("past");
+    }
+})
 
 
 
